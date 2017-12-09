@@ -1,5 +1,7 @@
 import java.util.Map;
 import java.util.HashMap;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class Graph {
 
@@ -9,6 +11,7 @@ public class Graph {
    public Graph(Map<Integer, Vertex> m, char[][] maze)
    {
        //vertices = m.clone();
+       vertices = m.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> new Vertex(e.getValue().getPos(),e.getValue().getId())));
        maze = maze.clone();
    }
 
