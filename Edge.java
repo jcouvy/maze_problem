@@ -23,7 +23,7 @@ public class Edge {
 
     public String toString()
     {
-        return "(" + end.getId() + "," + weight + ")"
+        return "(" + end.getId() + "," + weight + ")";
     }
 
 }

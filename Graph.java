@@ -8,18 +8,20 @@ public class Graph {
 
    public Graph(Map<Integer, Vertex> m, char[][] maze)
    {
-       vertices = m.clone();
+       //vertices = m.clone();
        maze = maze.clone();
    }
 
    public boolean isVertex(Position p)
    {
        //...
+       return false;
    }
 
    public boolean existsEdgeBetween(Vertex v1, Vertex v2)
    {
        //...
+       return false;
    }
 
    public int getIdFromPosition(Position p)
@@ -31,20 +33,21 @@ public class Graph {
    {
        Position p1 = v1.getPos();
        Position p2 = v2.getPos();
+       return 0;
    }
 
    public void findNeighbours(Position initialPos)
    {
-       if (!existsPathFrom(initialPos)
-           return;
-       else {
+       if (!existsPathFrom(initialPos))
+            return;
+        else {
            if (isVertex(initialPos)) {
                int id = getIdFromPosition(initialPos);
                Vertex v = new Vertex(initialPos, id);
-               if (!existsEdgeBetween()) {
+               /*if (!existsEdgeBetween()) {
                    int weight = calcWeight()
                    Edge e = new Edge(, , weight);
-               }
+               }*/
            }
        }
    }
@@ -57,10 +60,11 @@ public class Graph {
        int posX = p.getX();
        int posY = p.getY();
        boolean result = false;
+       /*
        try {
            result = maze[posX][posY] == '.' || maze[posX][posY] == '.' ||
                     maze[posX][posY] == '.' || maze[posX][posY] == '.');
-       } catch IndexOutOfBoundsException e ();
+       }catch(IndexOutOfBoundsException e());*/
        return result;
    }
 }
