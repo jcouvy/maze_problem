@@ -54,10 +54,12 @@ public class Graph {
        int posY = p.getY();
 
        try {
+           // Check vertical path
            if (isAccessible(new Position(posX-1, posY)) ||
-               isAccessible(new Position(posX+1, posY)) verticalPath = true;
+               isAccessible(new Position(posX+1, posY))) verticalPath = true;
+           // Check horizontal path
            if (isAccessible(new Position(posX, posY-1)) ||
-               isAccessible(new Position(posX, posY+1)) horizonPath = true;
+               isAccessible(new Position(posX, posY+1))) horizontalPath = true;
        } catch (IndexOutOfBoundsException outOfBonds) {};
 
        return verticalPath && horizontalPath;
@@ -73,17 +75,23 @@ public class Graph {
    {
        int surroundingWalls = 0;
        int accessiblePaths = 0;
+       int posX = p.getX();
+       int posY = p.getY();
 
-       if isAtBorder(p) return true;
+       if (isAtBorder(p)) return true;
        else {
            try {
-               if (isAccessible(new Position(posX-1, posY)) accessiblePaths++;
+               // check if path on the left
+               if (isAccessible(new Position(posX-1, posY))) accessiblePaths++;
                else surroundingWalls++;
-               if (isAccessible(new Position(posX+1, posY)) accessiblePaths++;
+               // check if path on the right
+               if (isAccessible(new Position(posX+1, posY))) accessiblePaths++;
                else surroundingWalls++;
-               if (isAccessible(new Position(posX, posY-1)) accessiblePaths++;
+               // check if path above
+               if (isAccessible(new Position(posX, posY-1))) accessiblePaths++;
                else surroundingWalls++;
-               if (isAccessible(new Position(posX, posY+1)) accessiblePaths++;
+               // check if path below
+               if (isAccessible(new Position(posX, posY+1))) accessiblePaths++;
                else surroundingWalls++;
            } catch (IndexOutOfBoundsException outOfBonds) {};
        }
@@ -98,9 +106,11 @@ public class Graph {
        int posX = p.getX();
        int posY = p.getY();
 
+       // check border left and right
        if (posX == 0 || posX == maze.length) {
            if (isAccessible(p)) border = true;
        }
+       // check border up and down
        if (posY == 0 || posY == maze[0].length) {
            if (isAccessible(p)) border = true;
        }

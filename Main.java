@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -44,6 +43,19 @@ public class Main {
         Graph g = new Graph(vertexMap,maze);
         System.out.println(g.getVertices());
         System.out.println(vertexMap);
+
+        // Check is vertex
+        Position postest = new Position(0,0);
+        System.out.println(g.isVertex(postest));
+        for(int i = 0; i<row;i++){
+            for(int j=0;j<col;j++){
+                postest = new Position(i,j);
+                if(g.isVertex(postest)){
+                    System.out.println(postest.toString());
+                }
+            }
+        }
+        //
 
     }
 }
