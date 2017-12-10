@@ -43,26 +43,23 @@ public class Graph {
    }
 
     /* Checks if a given Position p is at an intersection of routes.
-       An intersection is found if there exists both an horizontal and vertical
-       path around the position.
+       An intersection is found if there exists at least 3 differents
+       routes we can take (where we come from, and two others).
      */
    public boolean isAtIntersection(Position p)
    {
-       boolean verticalPath = false;
-       boolean horizontalPath = false;
+       int accessiblePaths = 0;
        int posX = p.getX();
        int posY = p.getY();
 
        try {
-           // Check vertical path
-           if (isAccessible(new Position(posX-1, posY)) ||
-               isAccessible(new Position(posX+1, posY))) verticalPath = true;
-           // Check horizontal path
-           if (isAccessible(new Position(posX, posY-1)) ||
-               isAccessible(new Position(posX, posY+1))) horizontalPath = true;
+           if (isAccessible(new Position(posX-1, posY))) accessiblePaths++;
+           if (isAccessible(new Position(posX+1, posY))) accessiblePaths++;
+           if (isAccessible(new Position(posX, posY-1))) accessiblePaths++;
+           if (isAccessible(new Position(posX, posY+1))) accessiblePaths++;
        } catch (IndexOutOfBoundsException outOfBonds) {};
 
-       return verticalPath && horizontalPath;
+       return accessiblePaths >= 3;
    }
 
    /* Checks if a Position p is at the beginning/end of a route.
