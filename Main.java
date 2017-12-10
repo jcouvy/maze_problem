@@ -1,10 +1,14 @@
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
 
 
     public static void main(String[] args) throws FileNotFoundException {
+
+        HashMap<Integer, Vertex> vertexMap =new HashMap<>();
 
         File file = new File("maze_input.txt");
         Scanner inputFile = new Scanner(file);
@@ -13,19 +17,33 @@ public class Main {
         int col = inputFile.nextInt();
         char[][] maze = new char[row][col];
         inputFile.nextLine();
-        //fill the maze
+
+        // Fill the Maze
         for (int i =0; i<row;i++) {
             String words = inputFile.nextLine();
             int size = Math.min(words.length(),col);
             for (int j=0; j<size; j++)
                 maze[i][j]=words.charAt(j);
         }
-        int stationpos = inputFile.nextInt();
-        int exitpos = inputFile.nextInt();
+        int stationPos = inputFile.nextInt();
+        int exitPos = inputFile.nextInt();
 
+        // Vertex Station
+        Position posStation = new Position(stationPos/col,stationPos%col);
+        Vertex verStation = new Vertex(posStation,stationPos);
 
+        // Vertex Exit
+        Position posExit = new Position(exitPos/col,exitPos%col);
+        Vertex verExit = new Vertex(posExit,exitPos);
 
+        // Fill the Map
+        vertexMap.put(stationPos,verStation);
+        vertexMap.put(exitPos,verExit);
 
+        // Graph Creation
+        Graph g = new Graph(vertexMap,maze);
+        System.out.println(g.getVertices());
+        System.out.println(vertexMap);
 
     }
 }

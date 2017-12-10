@@ -1,18 +1,20 @@
-import java.util.Map;
 import java.util.HashMap;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+
 
 public class Graph {
 
-   private Map<Integer, Vertex> vertices;
+    public HashMap<Integer, Vertex> getVertices() {
+        return vertices;
+    }
+
+    private HashMap<Integer, Vertex> vertices;
    private char[][] maze;
 
-   public Graph(Map<Integer, Vertex> m, char[][] maze)
+   public Graph(HashMap<Integer, Vertex> m, char[][] maze)
    {
        //vertices = m.clone();
-       vertices = m.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> new Vertex(e.getValue().getPos(),e.getValue().getId())));
-       maze = maze.clone();
+       this.vertices = (HashMap)m.clone();
+       this.maze = maze.clone();
    }
 
    public boolean isVertex(Position p)
