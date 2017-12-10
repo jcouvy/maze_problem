@@ -1,6 +1,8 @@
 
 # Directories
 out/
+.idea/
 
 #files
 maze_problem.iml
+.gitignore
