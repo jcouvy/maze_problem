@@ -53,6 +53,9 @@ public class Graph {
        int posX = p.getX();
        int posY = p.getY();
 
+       // If the position is a Wall, we directly return false.
+       if (!isAccessible(p)) return false;
+
        try {
            if (isAccessible(new Position(posX-1, posY))) accessiblePaths++;
            if (isAccessible(new Position(posX+1, posY))) accessiblePaths++;
@@ -60,7 +63,7 @@ public class Graph {
            if (isAccessible(new Position(posX, posY+1))) accessiblePaths++;
        } catch (IndexOutOfBoundsException outOfBonds) {};
 
-       return accessiblePaths >= 3;
+       return accessiblePaths == 3;
    }
 
    /* Checks if a Position p is at the beginning/end of a route.
@@ -76,19 +79,18 @@ public class Graph {
        int posX = p.getX();
        int posY = p.getY();
 
+       // If the position is a Wall, we directly return false.
+       if (!isAccessible(p)) return false;
        if (isAtBorder(p)) return true;
-       else {
+       // Check if there is a path on the left, right, above, and below
+       else if (!isAtBorder(p)) {
            try {
-               // check if path on the left
                if (isAccessible(new Position(posX-1, posY))) accessiblePaths++;
                else surroundingWalls++;
-               // check if path on the right
                if (isAccessible(new Position(posX+1, posY))) accessiblePaths++;
                else surroundingWalls++;
-               // check if path above
                if (isAccessible(new Position(posX, posY-1))) accessiblePaths++;
                else surroundingWalls++;
-               // check if path below
                if (isAccessible(new Position(posX, posY+1))) accessiblePaths++;
                else surroundingWalls++;
            } catch (IndexOutOfBoundsException outOfBonds) {};
@@ -105,12 +107,12 @@ public class Graph {
        int posY = p.getY();
 
        // check border left and right
-       if (posX == 0 || posX == maze.length) {
-           if (isAccessible(p)) border = true;
+       if (posX == 0 || posX == maze.length-1) {
+           border = true;
        }
        // check border up and down
-       if (posY == 0 || posY == maze[0].length) {
-           if (isAccessible(p)) border = true;
+       if (posY == 0 || posY == maze[0].length-1) {
+           border = true;
        }
 
        return border;
