@@ -36,7 +36,8 @@ public class Graph {
        boolean accessible = false;
 
        try {
-          accessible = maze[p.getX()][p.getY()] == PATH;
+           if (maze[p.getX()][p.getY()] == PATH)
+               accessible = true;
        } catch (IndexOutOfBoundsException outOfBonds) {};
 
        return accessible;
