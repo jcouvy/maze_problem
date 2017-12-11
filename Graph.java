@@ -167,4 +167,46 @@ public class Graph {
        }catch(IndexOutOfBoundsException e());*/
        return result;
    }
+
+    public static void main(String[] args)
+    {
+        System.out.println("Test Maze:");
+        char[][] testMaze = {
+                {'#', '.', '#', '#'},
+                {'#', '.', '#', '#'},
+                {'.', '.', '#', '#'},
+                {'#', '.', '#', '#'},
+                {'#', '#', '#', '#'}
+        };
+
+        HashMap<Integer, Vertex> map = new HashMap<>();
+        Graph graph = new Graph(map, testMaze);
+
+        for (int i = 0 ; i<testMaze.length ; ++i) {
+            for (int j = 0; j < testMaze[0].length; ++j) {
+                System.out.print(testMaze[i][j]);
+            }
+            System.out.println();
+        }
+
+        System.out.println("\nExpected vertices: ");
+        int[] expectedVertices = {1, 8, 9, 13};
+        char name = 'A';
+        for (int v : expectedVertices) {
+            System.out.println(name + "[" + v + "]");
+            name++;
+        }
+
+        System.out.println("Found vertices:");
+        name = 'A';
+        for (int i = 0 ; i<testMaze.length ; ++i) {
+            for (int j = 0; j < testMaze[0].length; ++j) {
+                Position p = new Position(i, j);
+                if (graph.isVertex(p)) {
+                    System.out.println(name + "[" + graph.getIdFromPosition(p) + "]");
+                    name++;
+                }
+            }
+        }
+    }
 }
