@@ -118,95 +118,107 @@ public class Graph {
        return border;
    }
 
-   public boolean existsEdgeBetween(Vertex v1, Vertex v2)
-   {
-       //...
-       return false;
-   }
 
+   /* Returns the ID of a Vertex from a given Position
+   according to the following formulae:
+   VertexID(V) = position(i, j) = i * col + j;
+    */
    public int getIdFromPosition(Position p)
    {
        return p.getX() * maze[0].length + p.getY();
    }
 
+   /* In the maze problem, we assume that there are no movement
+   in diagonal. Two vertices can be either on the same row, or
+   the same column. If an edge exists between the two, then the
+   weight is equal to the distance (amount of dots) between each
+   vertex.
+    */
    public int calcWeight(Vertex v1, Vertex v2)
    {
        Position p1 = v1.getPos();
        Position p2 = v2.getPos();
-       return 0;
+
+       if (existsEdgeBetween(v1, v2)) {
+       if (p1.getX() == p2.getX())
+           return Math.abs(p1.getY() - p2.getY());
+       else if (p1.getY() == p2.getY())
+           return Math.abs(p1.getX() - p2.getX());
+   }
+
+       return Integer.MAX_VALUE; // Returns infinity if no edge is found
+   }
+
+   /*
+   Returns true if an edge is between the two given Vertices v1 and v2
+    */
+   public boolean existsEdgeBetween(Vertex v1, Vertex v2)
+   {
+       return v1.getNeighbours().contains(v2);
    }
 
    public void findNeighbours(Position initialPos)
    {
-       if (!existsPathFrom(initialPos))
-            return;
-        else {
-           if (isVertex(initialPos)) {
-               int id = getIdFromPosition(initialPos);
-               Vertex v = new Vertex(initialPos, id);
-               /*if (!existsEdgeBetween()) {
-                   int weight = calcWeight()
-                   Edge e = new Edge(, , weight);
-               }*/
-           }
-       }
    }
 
-    /* Checks wether it is possible to move from a given Vertex v
-    * This means there is a clear way either UP, DOWN, LEFT, or RIGHT.
-    */
+   /* Checks wether it is possible to move from a given Vertex v
+   * This means there is a clear way either UP, DOWN, LEFT, or RIGHT.
+   */
    private boolean existsPathFrom(Position p)
    {
        int posX = p.getX();
        int posY = p.getY();
-       boolean result = false;
-       /*
-       try {
-           result = maze[posX][posY] == '.' || maze[posX][posY] == '.' ||
-                    maze[posX][posY] == '.' || maze[posX][posY] == '.');
-       }catch(IndexOutOfBoundsException e());*/
-       return result;
-   }
 
-    public static void main(String[] args)
-    {
-        System.out.println("Test Maze:");
-        char[][] testMaze = {
-                {'#', '.', '#', '#'},
-                {'#', '.', '#', '#'},
-                {'.', '.', '#', '#'},
-                {'#', '.', '#', '#'},
-                {'#', '#', '#', '#'}
-        };
-
-        HashMap<Integer, Vertex> map = new HashMap<>();
-        Graph graph = new Graph(map, testMaze);
-
-        for (int i = 0 ; i<testMaze.length ; ++i) {
-            for (int j = 0; j < testMaze[0].length; ++j) {
-                System.out.print(testMaze[i][j]);
-            }
-            System.out.println();
-        }
-
-        System.out.println("\nExpected vertices: ");
-        int[] expectedVertices = {1, 8, 9, 13};
-        char name = 'A';
-        for (int v : expectedVertices) {
-            System.out.println(name + "[" + v + "]");
-            name++;
-        }
-
-        System.out.println("Found vertices:");
-        name = 'A';
-        for (int i = 0 ; i<testMaze.length ; ++i) {
-            for (int j = 0; j < testMaze[0].length; ++j) {
-                Position p = new Position(i, j);
-                if (graph.isVertex(p)) {
-                    System.out.println(name + "[" + graph.getIdFromPosition(p) + "]");
-                    name++;
-                }
-            }
-        }
+       return  isAccessible(new Position(posX+1, posY)) ||
+               isAccessible(new Position(posX-1, posY)) ||
+               isAccessible(new Position(posX, posY+1)) ||
+               isAccessible(new Position(posX, posY-1));
     }
+
+   public static void main(String[] args)
+   {
+       System.out.println("Test Maze:");
+       char[][] testMaze = {
+               {'#', '.', '#', '#'},
+               {'#', '.', '#', '#'},
+               {'.', '.', '#', '#'},
+               {'#', '.', '#', '#'},
+               {'#', '#', '#', '#'}
+       };
+
+       HashMap<Integer, Vertex> map = new HashMap<>();
+       Graph graph = new Graph(map, testMaze);
+
+       for (int i = 0 ; i<testMaze.length ; ++i) {
+           for (int j = 0; j < testMaze[0].length; ++j) {
+               System.out.print(testMaze[i][j]);
+           }
+           System.out.println();
+       }
+
+       System.out.println("\nExpected vertices: ");
+       int[] expectedVertices = {1, 8, 9, 13};
+       char name = 'A';
+       for (int v : expectedVertices) {
+           System.out.println(name + "[" + v + "]");
+           name++;
+       }
+
+       System.out.println("Found vertices:");
+       name = 'A';
+       for (int i = 0 ; i<testMaze.length ; ++i) {
+           for (int j = 0; j < testMaze[0].length; ++j) {
+               Position p = new Position(i, j);
+               if (graph.isVertex(p)) {
+                   System.out.println(name + "[" + graph.getIdFromPosition(p) + "]");
+                   name++;
+               }
+           }
+       }
+
+       System.out.println("\nIs there a path from (1, 1): ");
+       System.out.println(graph.existsPathFrom(new Position(1, 1)));
+       System.out.println("Is there a path from (3, 3): ");
+       System.out.println(graph.existsPathFrom(new Position(3, 3)));
+   }
 }
