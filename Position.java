@@ -17,6 +17,16 @@ public class Position {
         return y;
     }
 
+    public boolean equals(Object v)
+    {
+        boolean retVal = false;
+        if (v instanceof Position) {
+            Position p = (Position) v;
+            retVal = (getX() == p.getX() && getY() == p.getY());
+        }
+        return retVal;
+    }
+
     public String toString()
     {
         return "(" + x + "," + y + ")";
