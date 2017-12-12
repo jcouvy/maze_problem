@@ -29,7 +29,7 @@ public class Vertex {
 
     public String toString()
     {
-        return "Vertex: "+id;
+        return "Vertex ["+id+"]" + " " + pos.toString();
     }
 
     /* Adds an edge to the neighbours ArrayList. Returns True if a change occured
