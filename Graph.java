@@ -53,7 +53,7 @@ public class Graph {
        routes we can take (where we come from, and two others).
      */
    public boolean isAtIntersection(Position p)
-   {
+   { 
        int accessiblePaths = 0;
        int posX = p.getX();
        int posY = p.getY();
