@@ -68,7 +68,7 @@ public class Graph {
            if (isAccessible(new Position(posX, posY+1))) accessiblePaths++;
        } catch (IndexOutOfBoundsException outOfBonds) {};
 
-       return accessiblePaths == 3;
+       return accessiblePaths >= 3;
    }
 
    /* Checks if a Position p is at the beginning/end of a route.
@@ -206,7 +206,7 @@ public class Graph {
                    nextMoves.add(p);
            }
 
-           currentPos = nextMoves.pop();
+           currentPos = nextMoves.removeLast();
            cost++;
 
            if (isVertex(currentPos)) {
@@ -225,8 +225,8 @@ public class Graph {
        System.out.println("Test Maze:");
        char[][] testMaze = {
                {'#', '.', '#', '#'},
+               {'.', '.', '.', '#'},
                {'#', '.', '#', '#'},
-               {'.', '.', '#', '#'},
                {'#', '.', '#', '#'},
                {'#', '#', '#', '#'}
        };
@@ -242,7 +242,7 @@ public class Graph {
        }
 
        System.out.println("\nExpected vertices: ");
-       int[] expectedVertices = {1, 8, 9, 13};
+       int[] expectedVertices = {1, 4, 5, 6, 13};
        char name = 'A';
        for (int v : expectedVertices) {
            System.out.println(name + "[" + v + "]");
@@ -263,18 +263,15 @@ public class Graph {
            }
        }
 
-       System.out.println("Get Vertex from Position (1,1): ");
+       System.out.println("\nGet Vertex from Position (0,1): ");
        System.out.println(graph.getVertexFromPosition(new Position(0, 1)));
 
-       Vertex initialVertex = graph.getVertexFromPosition(new Position(2, 1));
-       Vertex nearestNeighbour = graph.getVertexFromPosition(new Position(2, 1));
+       Vertex initialVertex = graph.getVertexFromPosition(new Position(1, 1));
        graph.findNeighbours(initialVertex);
-       System.out.println("Searching the vertices accessible from:\n"+initialVertex);
-       System.out.println("Expected neighbours:");
-       System.out.println(nearestNeighbour);
-       System.out.println("Neighbours found:");
+       System.out.println("\nSearching the vertices accessible from:\n"+initialVertex);
+       System.out.println("\nNeighbours found:");
        for (Edge e : initialVertex.getNeighbours()) {
-           System.out.println(e.getEnd());
+           System.out.println(e.getEnd() + " Cost: " + e.getWeight());
        }
 
    }
