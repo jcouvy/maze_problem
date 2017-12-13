@@ -1,24 +1,47 @@
-import java.util.HashMap;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class Dijkstra{
 
-    public void calculate(Vertex v){
-        int cpt=0;
+    public  void calculate(Vertex v){
+        v.setDistance(0);
         PriorityQueue<Vertex> queue = new PriorityQueue<Vertex>();
-
         queue.add(v);
+        v.setVisited(true);
+
         while(!queue.isEmpty()){
-            Vertex u = queue.poll();
+            Vertex atual = queue.poll();
 
-            for(Edge voisin : u.getNeighbours()){
-                int newDist = cpt+ voisin.getWeight();
+            for(Edge voisin : atual.getNeighbours()){
 
-                // I think we need to put on vertex a value weight also on the vertex
+                Vertex target = voisin.getEnd();
+                if(!target.isVisited()){
+                    double newDist = atual.getDistance()+voisin.getWeight();
+                    if( newDist < target.getDistance() ){
+                        queue.remove(target);
+                        target.setDistance(newDist);
+                        target.setPredecessor(atual);
+                        queue.add(target);
+                    }
+                }
+
             }
+            atual.setVisited(true);
         }
 
-    } 
+    }
+
+    public  List<Vertex> getShortestPathTo(Vertex targetVertex){
+        List<Vertex> path = new ArrayList<>();
+
+        for(Vertex vertex=targetVertex;vertex!=null;vertex=vertex.getPredecessor()){
+            path.add(vertex);
+        }
+
+        Collections.reverse(path);
+        return path;
+    }
+
+
 
     public static void main(String[] args) {
         System.out.println("Test Maze:");
@@ -72,10 +95,18 @@ public class Dijkstra{
         map.get(9).addEdge(new Edge(map.get(9),map.get(18),3));
         map.get(18).addEdge(new Edge(map.get(18),map.get(9),3));
 
-        System.out.println("1 : "+map.get(1).getNeighbours());
-        System.out.println("9 : "+map.get(9).getNeighbours());
+        System.out.println("1 :  "+map.get(1).getNeighbours());
+        System.out.println("9 :  "+map.get(9).getNeighbours());
         System.out.println("10 : "+map.get(10).getNeighbours());
         System.out.println("18 : "+map.get(18).getNeighbours());
+
+        System.out.println();
+        System.out.println("--------- Test Dijk ----------------");
+        // Depend with which one with start
+        Dijkstra shortestPath = new Dijkstra();
+        shortestPath.calculate(map.get(18));
+        System.out.println("Shortest Path 18 to 1: " + shortestPath.getShortestPathTo(map.get(1)));
+        System.out.println("length :" +map.get(1).getDistance());
 
     }
 }
