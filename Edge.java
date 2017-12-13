@@ -21,6 +21,10 @@ public class Edge {
         return end;
     }
 
+    public int getWeight() {
+        return weight;
+    }
+
     public String toString()
     {
         return "(" + end.getId() + "," + weight + ")";
