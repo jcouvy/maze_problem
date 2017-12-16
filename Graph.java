@@ -8,10 +8,28 @@ public class Graph {
    private final char WALL = '#';
    private final char PATH = '.';
 
-   public Graph(HashMap<Integer, Vertex> m, char[][] maze)
+   public Graph(char[][] maze)
    {
-       this.vertices = (HashMap) m.clone();
+       this.vertices = new HashMap<Integer, Vertex>();  
+
        this.maze = maze.clone();
+
+
+	for (int i=0 ; i<maze.length ; ++i) {
+          for(int j=0 ; j<maze[0].length ; ++j) {
+            Postion p = new Position(i,j);
+            if ( isVertex(p) ){
+	     int id = getIdFromPosition(p);
+	     Vertex v = new Vertex(p, id);
+             vertices.put(id, v);
+            }
+          }
+        }
+
+       for (Vertex v1 : vertices.value() ){
+        findNeightbours(v1);
+       }
+
    }
 
    public HashMap<Integer, Vertex> getVertices() {
