@@ -15,7 +15,7 @@ public class Graph {
 
        for (int i=0 ; i<maze.length ; ++i) {
            for(int j=0 ; j<maze[0].length ; ++j) {
-               Postion p = new Position(i,j);
+               Position p = new Position(i, j);
                if (isVertex(p)) {
                    int id = getIdFromPosition(p);
                    Vertex v = new Vertex(p, id);
@@ -24,8 +24,8 @@ public class Graph {
            }
        }
 
-       for (Vertex v1 : vertices.value()) {
-           findNeightbours(v1);
+       for (Vertex v1 : vertices.values()) {
+           findNeighbours(v1);
        }
    }
 
