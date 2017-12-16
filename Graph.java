@@ -10,26 +10,23 @@ public class Graph {
 
    public Graph(char[][] maze)
    {
-       this.vertices = new HashMap<Integer, Vertex>();  
-
+       this.vertices = new HashMap<Integer, Vertex>();
        this.maze = maze.clone();
 
-
-	for (int i=0 ; i<maze.length ; ++i) {
-          for(int j=0 ; j<maze[0].length ; ++j) {
-            Postion p = new Position(i,j);
-            if ( isVertex(p) ){
-	     int id = getIdFromPosition(p);
-	     Vertex v = new Vertex(p, id);
-             vertices.put(id, v);
-            }
-          }
-        }
-
-       for (Vertex v1 : vertices.value() ){
-        findNeightbours(v1);
+       for (int i=0 ; i<maze.length ; ++i) {
+           for(int j=0 ; j<maze[0].length ; ++j) {
+               Postion p = new Position(i,j);
+               if (isVertex(p)) {
+                   int id = getIdFromPosition(p);
+                   Vertex v = new Vertex(p, id);
+                   vertices.put(id, v);
+               }
+           }
        }
 
+       for (Vertex v1 : vertices.value()) {
+           findNeightbours(v1);
+       }
    }
 
    public HashMap<Integer, Vertex> getVertices() {
@@ -258,8 +255,7 @@ public class Graph {
                {'#', '.', '#', '#'}
        };
 
-       HashMap<Integer, Vertex> map = new HashMap<>();
-       Graph graph = new Graph(map, testMaze);
+       Graph graph = new Graph(testMaze);
 
        for (int i = 0 ; i<testMaze.length ; ++i) {
            for (int j = 0; j < testMaze[0].length; ++j) {
