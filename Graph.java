@@ -190,11 +190,16 @@ public class Graph {
 
        int cost = 0;
        int posX, posY;
+       // This flag prevents to break out of the while loop if only one path is accessible
+       // and no vertex can be found directly
+       boolean hasFoundNeighbour;
 
        do {
+           visited.add(currentPos);
+           hasFoundNeighbour = false;
+
            posX = currentPos.getX();
            posY = currentPos.getY();
-           visited.add(currentPos);
 
            possibleMoves[0] = new Position(posX-1, posY); // Up
            possibleMoves[1] = new Position(posX+1, posY); // Down
@@ -210,13 +215,17 @@ public class Graph {
            cost++;
 
            if (isVertex(currentPos)) {
+               hasFoundNeighbour = true;
                Vertex v2 = getVertexFromPosition(currentPos);
-               v1.addEdge(new Edge(v1, v2, cost));
-               v2.addEdge(new Edge(v2, v1, cost));
+               if (!existsEdgeBetween(v1, v2))
+                   v1.addEdge(new Edge(v1, v2, cost));
+               if (!existsEdgeBetween(v2, v1))
+                   v2.addEdge(new Edge(v2, v1, cost));
                cost = 0;
            }
-
-       } while (nextMoves != null && !nextMoves.isEmpty());
+         // Would loop forever if no neighbours are found, however the requirements of the
+         // maze are such that no isolated vertex can exist
+       } while ((nextMoves != null && !nextMoves.isEmpty()) || !hasFoundNeighbour);
 
    }
 
@@ -225,10 +234,10 @@ public class Graph {
        System.out.println("Test Maze:");
        char[][] testMaze = {
                {'#', '.', '#', '#'},
+               {'#', '.', '#', '#'},
                {'.', '.', '.', '#'},
                {'#', '.', '#', '#'},
-               {'#', '.', '#', '#'},
-               {'#', '#', '#', '#'}
+               {'#', '.', '#', '#'}
        };
 
        HashMap<Integer, Vertex> map = new HashMap<>();
@@ -266,7 +275,7 @@ public class Graph {
        System.out.println("\nGet Vertex from Position (0,1): ");
        System.out.println(graph.getVertexFromPosition(new Position(0, 1)));
 
-       Vertex initialVertex = graph.getVertexFromPosition(new Position(1, 1));
+       Vertex initialVertex = graph.getVertexFromPosition(new Position(2, 1));
        graph.findNeighbours(initialVertex);
        System.out.println("\nSearching the vertices accessible from:\n"+initialVertex);
        System.out.println("\nNeighbours found:");
