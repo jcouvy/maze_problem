@@ -234,8 +234,6 @@ public class Graph {
                Vertex v2 = getVertexFromPosition(currentPos);
                if (!existsEdgeBetween(v1, v2))
                    v1.addEdge(new Edge(v1, v2, cost));
-               if (!existsEdgeBetween(v2, v1))
-                   v2.addEdge(new Edge(v2, v1, cost));
                cost = 0;
            }
          // Would loop forever if no neighbours are found, however the requirements of the
@@ -265,7 +263,7 @@ public class Graph {
        }
 
        System.out.println("\nExpected vertices: ");
-       int[] expectedVertices = {1, 4, 5, 6, 13};
+       int[] expectedVertices = {1, 8, 9, 10, 17};
        char name = 'A';
        for (int v : expectedVertices) {
            System.out.println(name + "[" + v + "]");
@@ -273,28 +271,20 @@ public class Graph {
        }
 
        System.out.println("Found vertices:");
-       name = 'A';
-       for (int i = 0 ; i<testMaze.length ; ++i) {
-           for (int j = 0; j < testMaze[0].length; ++j) {
-               Position p = new Position(i, j);
-               if (graph.isVertex(p)) {
-                   int vertexId = graph.getIdFromPosition(p);
-                   System.out.println(name + "[" + vertexId + "]");
-                   graph.getVertices().put(vertexId, new Vertex(p, vertexId));
-                   name++;
-               }
-           }
+       for (Vertex v : graph.vertices.values()) {
+           System.out.println(v);
        }
 
        System.out.println("\nGet Vertex from Position (0,1): ");
        System.out.println(graph.getVertexFromPosition(new Position(0, 1)));
 
-       Vertex initialVertex = graph.getVertexFromPosition(new Position(2, 1));
-       graph.findNeighbours(initialVertex);
-       System.out.println("\nSearching the vertices accessible from:\n"+initialVertex);
-       System.out.println("\nNeighbours found:");
-       for (Edge e : initialVertex.getNeighbours()) {
-           System.out.println(e.getEnd() + " Cost: " + e.getWeight());
+       System.out.println("\nFinding neighbours of all vertices :");
+       for (Vertex v : graph.vertices.values()) {
+           System.out.println("Neighbours of " + v);
+           for (Edge e : v.getNeighbours()) {
+               System.out.println(e.getEnd() + " Cost: " + e.getWeight());
+           }
+           System.out.println();
        }
 
    }
