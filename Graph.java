@@ -195,8 +195,7 @@ public class Graph {
 
    Loop back and repeat until the next moves list is empty.
     */
-   public void findNeighbours(Vertex v1)
-   {
+   public void findNeighbours(Vertex v1) {
        LinkedList<Position> nextMoves = new LinkedList<Position>();
        LinkedList<Position> visited = new LinkedList<Position>();
 
@@ -208,10 +207,24 @@ public class Graph {
        // This flag prevents to break out of the while loop if only one path is accessible
        // and no vertex can be found directly
        boolean hasFoundNeighbour;
-
+       Position initialPos = v1.getPos();
+       nextMoves.add(currentPos);
        do {
+
            visited.add(currentPos);
            hasFoundNeighbour = false;
+
+           if (isVertex(currentPos) && currentPos != initialPos) {
+               hasFoundNeighbour = true;
+               Vertex v2 = getVertexFromPosition(currentPos);
+               if (!existsEdgeBetween(v1, v2))
+                   v1.addEdge(new Edge(v1, v2, cost));
+               try {
+                   currentPos = nextMoves.removeLast();
+               } catch (Exception e) { break; }
+               cost = 0;
+               continue;
+           }
 
            posX = currentPos.getX();
            posY = currentPos.getY();
@@ -226,19 +239,16 @@ public class Graph {
                    nextMoves.add(p);
            }
 
-           currentPos = nextMoves.removeLast();
+           try {
+               currentPos = nextMoves.removeLast();
+           } catch (Exception e) {
+               break;
+           }
            cost++;
 
-           if (isVertex(currentPos)) {
-               hasFoundNeighbour = true;
-               Vertex v2 = getVertexFromPosition(currentPos);
-               if (!existsEdgeBetween(v1, v2))
-                   v1.addEdge(new Edge(v1, v2, cost));
-               cost = 0;
-           }
          // Would loop forever if no neighbours are found, however the requirements of the
          // maze are such that no isolated vertex can exist
-       } while ((nextMoves != null && !nextMoves.isEmpty()) || !hasFoundNeighbour);
+       } while (!nextMoves.isEmpty() || !hasFoundNeighbour);
 
    }
 
