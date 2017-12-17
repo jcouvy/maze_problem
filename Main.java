@@ -61,7 +61,7 @@ public class Main {
         try (Writer writer = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream("output/shortest_path.txt"), "utf-8"))) {
             d.calculate(g.getVertices().get(stationPos));
-            writer.write("Shortest Path Station to exit: " + d.getShortestPathTo(g.getVertices().get(exitPos))+"\n");
+            writer.write("Shortest Path: " + d.getShortestPathTo(g.getVertices().get(exitPos))+"\n");
             writer.write("length :" +g.getVertices().get(exitPos).getDistance());
         } catch (IOException e) {}
 
