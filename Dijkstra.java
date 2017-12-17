@@ -2,6 +2,8 @@ import java.util.*;
 
 public class Dijkstra{
 
+    public String pathtext;
+
     public  void calculate(Vertex v){
         v.setDistance(0);
         PriorityQueue<Vertex> queue = new PriorityQueue<Vertex>();
@@ -57,7 +59,7 @@ public class Dijkstra{
         Position postest;
         Vertex vertex;
         HashMap<Integer, Vertex> map = new HashMap<>();
-        Graph graph = new Graph(map, testMaze);
+        Graph graph = new Graph(testMaze);
 
         // Display maze
         for (int i = 0 ; i<testMaze.length ; ++i) {

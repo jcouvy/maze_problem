@@ -1,0 +1,2 @@
+Shortest Path Station to exit: [Vertex [17] (2,1), Vertex [33] (4,1), Vertex [49] (6,1), Vertex [52] (6,4), Vertex [55] (6,7)]
+            length :10.0

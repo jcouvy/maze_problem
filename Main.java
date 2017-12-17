@@ -1,13 +1,13 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
 
 
     public static void main(String[] args) throws FileNotFoundException {
-
-        HashMap<Integer, Vertex> vertexMap =new HashMap<>();
 
         File file = new File("maze_input.txt");
         Scanner inputFile = new Scanner(file);
@@ -35,15 +35,35 @@ public class Main {
         Position posExit = new Position(exitPos/col,exitPos%col);
         Vertex verExit = new Vertex(posExit,exitPos);
 
-        // Fill the Map
-        vertexMap.put(stationPos,verStation);
-        vertexMap.put(exitPos,verExit);
 
         // Graph Creation
-        Graph g = new Graph(vertexMap,maze);
-        System.out.println(g.getVertices());
-        System.out.println(vertexMap);
+        Graph g = new Graph(maze);
+        //System.out.println(g.getVertices());
 
+        // File Diagram
+        String tmp;
+        ArrayList<String> val = new ArrayList<>();
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream("output/diagram.txt"), "utf-8"))) {
+
+            for (Vertex v : g.getVertices().values()) {
+                for (Edge e : v.getNeighbours()) {
+                    val.add("("+e.getEnd().getId()+","+e.getWeight()+")");
+                }
+                tmp = val.toString();
+                val.clear();
+                writer.write(v.getId()+tmp+"\n");
+            }
+        } catch (IOException e) {}
+
+        // File Shortest Path
+        Dijkstra d = new Dijkstra();
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream("output/shortest_path.txt"), "utf-8"))) {
+            d.calculate(g.getVertices().get(stationPos));
+            writer.write("Shortest Path Station to exit: " + d.getShortestPathTo(g.getVertices().get(exitPos))+"\n");
+            writer.write("length :" +g.getVertices().get(exitPos).getDistance());
+        } catch (IOException e) {}
 
 
     }
