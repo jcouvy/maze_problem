@@ -153,25 +153,27 @@ public class Graph {
        return accessible;
    }
 
-//   /* In the maze problem, we assume that there are no movement
-//   in diagonal. Two vertices can be either on the same row, or
-//   the same column. If an edge exists between the two, then the
-//   weight is equal to the distance (amount of dots) between each
-//   vertex.
-//    */
+   /* In the maze problem, we assume that there are no movement
+   in diagonal. Two vertices can be either on the same row, or
+   the same column. If an edge exists between the two, then the
+   weight is equal to the distance (amount of dots) between each
+   vertex.
+
+    NB: cannot work if a turn is not considered as an intersection
+    */
 //   public int calcWeight(Vertex v1, Vertex v2)
 //   {
 //       Position p1 = v1.getPos();
 //       Position p2 = v2.getPos();
 //
-//       if (existsEdgeBetween(v1, v2)) {
-//           if (p1.getX() == p2.getX())
-//               return Math.abs(p1.getY() - p2.getY());
-//           else if (p1.getY() == p2.getY())
-//               return Math.abs(p1.getX() - p2.getX());
+//       if (p1.getX() == p2.getX())
+//           return Math.abs(p1.getY() - p2.getY());
+//       else if (p1.getY() == p2.getY())
+//           return Math.abs(p1.getX() - p2.getX());
+//       else {
+//           int translation = Math.abs(p1.getX() - p2.getX());
+//           return Math.abs(translation - p2.getY());
 //       }
-//
-//       return Integer.MAX_VALUE; // Returns infinity if no edge is found
 //   }
 
    /*
@@ -193,6 +195,9 @@ public class Graph {
    3. If it is a Vertex then it is a neighbour: we create two edges as the graph is
    bi-directional. The cost of the path is reset to 0 and we start another iteration.
 
+   The hasFoundNeighbour flag prevents to break out of the while loop if only one path is accessible
+   and no vertex can be found directly
+
    Loop back and repeat until the next moves list is empty.
     */
    public void findNeighbours(Vertex v1) {
@@ -200,14 +205,13 @@ public class Graph {
        LinkedList<Position> visited = new LinkedList<Position>();
 
        Position currentPos = v1.getPos();
+       Position initialPos = v1.getPos();
        Position[] possibleMoves = new Position[4];
 
        int cost = 0;
        int posX, posY;
-       // This flag prevents to break out of the while loop if only one path is accessible
-       // and no vertex can be found directly
        boolean hasFoundNeighbour;
-       Position initialPos = v1.getPos();
+
        nextMoves.add(currentPos);
        do {
 
@@ -221,8 +225,8 @@ public class Graph {
                    v1.addEdge(new Edge(v1, v2, cost));
                try {
                    currentPos = nextMoves.removeLast();
+                   cost = 1;
                } catch (Exception e) { break; }
-               cost = 0;
                continue;
            }
 
@@ -241,10 +245,10 @@ public class Graph {
 
            try {
                currentPos = nextMoves.removeLast();
+               cost++;
            } catch (Exception e) {
                break;
            }
-           cost++;
 
          // Would loop forever if no neighbours are found, however the requirements of the
          // maze are such that no isolated vertex can exist
